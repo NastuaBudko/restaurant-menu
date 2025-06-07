@@ -37,8 +37,8 @@ const MenuSearch: React.FC<MenuSearchProps> = ({
           whileTap={{ scale: 0.95 }}
           onClick={() => onCategoryChange(null)}
           className={`px-4 py-2 rounded-full text-sm transition-all duration-300 ${selectedCategory === null
-              ? 'bg-red-600 text-white shadow-md'
-              : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+            ? 'bg-red-600 text-white shadow-md'
+            : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
             }`}
         >
           All
@@ -50,8 +50,8 @@ const MenuSearch: React.FC<MenuSearchProps> = ({
             whileTap={{ scale: 0.95 }}
             onClick={() => onCategoryChange(category)}
             className={`px-4 py-2 rounded-full text-sm transition-all duration-300 ${selectedCategory === category
-                ? 'bg-red-600 text-white shadow-md'
-                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              ? 'bg-red-600 text-white shadow-md'
+              : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
               }`}
           >
             {category}

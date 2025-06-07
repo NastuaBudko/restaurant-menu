@@ -1,3 +1,5 @@
+// Cart.tsx
+
 import React from 'react';
 import { X } from 'lucide-react';
 import CartItem from './CartItem';
@@ -5,8 +7,23 @@ import { useCart } from '../../context/CartContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
+const calculateCartSummary = (totalPrice: number) => {
+  const vat = totalPrice * 0.2;
+  const delivery = totalPrice * 0.1;
+  const totalWithExtras = totalPrice + vat + delivery;
+
+  return {
+    subtotal: totalPrice,
+    vat,
+    delivery,
+    total: totalWithExtras,
+  };
+};
+
 const Cart: React.FC = () => {
   const { cartItems, totalPrice, clearCart, isCartOpen, setIsCartOpen } = useCart();
+
+  const { subtotal, vat, delivery, total } = calculateCartSummary(totalPrice);
 
   return (
     <AnimatePresence>
@@ -53,14 +70,29 @@ const Cart: React.FC = () => {
                   </AnimatePresence>
                 </div>
 
-                <div className="px-6 py-4 border-t border-gray-200">
-                  <div className="flex justify-between mb-4">
-                    <span className="font-semibold">Total:</span>
-                    <span className="font-semibold">${totalPrice.toFixed(2)}</span>
+                <div className="px-6 py-4 border-t border-gray-200 space-y-2 text-sm text-gray-700">
+                  <div className="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span>${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>VAT (20%):</span>
+                    <span>${vat.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Delivery (10%):</span>
+                    <span>${delivery.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold border-t pt-2 border-gray-300">
+                    <span>Total:</span>
+                    <span>${total.toFixed(2)}</span>
                   </div>
 
                   <Link to="/cart">
-                    <button onClick={() => setIsCartOpen(false)} className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-md">
+                    <button
+                      onClick={() => setIsCartOpen(false)}
+                      className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors duration-300 shadow-md mt-4"
+                    >
                       Checkout
                     </button>
                   </Link>

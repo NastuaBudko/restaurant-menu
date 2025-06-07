@@ -12,10 +12,20 @@ interface CheckoutFormData {
     notes: string;
 }
 
+const calculateSummary = (subtotal: number) => {
+    const vat = subtotal * 0.2;
+    const delivery = subtotal * 0.1;
+    const total = subtotal + vat + delivery;
+    return { subtotal, vat, delivery, total };
+};
+
+
 const CheckoutPage = () => {
     const { cartItems, totalPrice, clearCart } = useCart();
     const navigate = useNavigate();
     const formRef = useRef<HTMLFormElement>(null);
+
+    const { subtotal, vat, delivery, total } = calculateSummary(totalPrice);
 
     const [formData, setFormData] = useState<CheckoutFormData>({
         name: '',
@@ -285,18 +295,22 @@ const CheckoutPage = () => {
                                 ))}
                             </div>
 
-                            <div className="space-y-4 mb-6">
+                            <div className="space-y-4 mb-6 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Subtotal</span>
-                                    <span>{formatPrice(totalPrice)}</span>
+                                    <span>{formatPrice(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Delivery Fee</span>
-                                    <span>{formatPrice(0)}</span>
+                                    <span className="text-gray-600">VAT (20%)</span>
+                                    <span>{formatPrice(vat)}</span>
                                 </div>
-                                <div className="border-t pt-4 flex justify-between font-bold">
+                                <div className="flex justify-between">
+                                    <span className="text-gray-600">Delivery Fee (10%)</span>
+                                    <span>{formatPrice(delivery)}</span>
+                                </div>
+                                <div className="border-t pt-4 flex justify-between font-bold text-base">
                                     <span>Total</span>
-                                    <span className="text-primary-600">{formatPrice(totalPrice)}</span>
+                                    <span className="text-primary-600">{formatPrice(total)}</span>
                                 </div>
                             </div>
                         </div>
